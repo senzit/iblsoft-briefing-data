@@ -1,2 +1,3 @@
-# iblsoft-briefing-data
-Test OPMET Query service APP
+# iblsoft-briefing
+
+[Edit in StackBlitz next generation editor ⚡️](https://stackblitz.com/~/github.com/senzit/iblsoft-briefing)
