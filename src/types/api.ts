@@ -4,11 +4,17 @@ export enum SubmitStatus {
     LOADING = "loading",
 }
 
-export interface QueryParams {
+export interface StationsQueryParams {
     id: string;
     reportTypes: string[];
     stations?: string[];
-    countries?: string[];
+    firs?: string[];
+}
+
+export interface CountriesQueryParams {
+    id: string;
+    reportTypes: string[];
+    countries: string[];
 }
 
 export interface JsonRpcResponse {

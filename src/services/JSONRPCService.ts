@@ -1,12 +1,13 @@
-import { JsonRpcRequest, JsonRpcResponse, QueryParams } from "../types/api";
+import { CountriesQueryParams, JsonRpcRequest, JsonRpcResponse, StationsQueryParams } from "../types/api";
 
 const JSONRPCService = {
-    async query(params: QueryParams[]): Promise<JsonRpcResponse> {
+    async query(params: (StationsQueryParams | CountriesQueryParams)[]): Promise<JsonRpcResponse> {
+
         const requestData: JsonRpcRequest = {
             jsonrpc: "2.0",
             id: `query-${Date.now()}`,
             method: "query",
-            params,
+            params: params,
         };
 
         try {

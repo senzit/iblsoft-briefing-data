@@ -7,7 +7,7 @@ import CheckboxGroup from "../CheckboxGroup/CheckboxGroup";
 import { useTranslation } from 'react-i18next';
 import InputGroup from '../InputGroup/InputGroup';
 import { fetchJSONRPC } from '../../services/api';
-import { QueryParams } from '../../types/api';
+import { CountriesQueryParams, StationsQueryParams } from '../../types/api';
 import { useFormData } from '../../context/FormData';
 
 function Form() {
@@ -24,7 +24,6 @@ function Form() {
         { label: t('SIGMET'), value: ReportTypes.SIGMET },
         { label: t('TAF'), value: ReportTypes.TAF },
     ];
-
 
     const methods: UseFormReturn<BriefingFormData> = useForm<BriefingFormData>({
         defaultValues: {
@@ -71,6 +70,28 @@ function Form() {
         }
     });
 
+    const createStationsParams = (reportTypes: string[], stations: string[]): StationsQueryParams | null => {
+        if (stations.length !== 0) {
+            const params: StationsQueryParams = {
+                id: Date.now().toString(),
+                reportTypes: reportTypes,
+                stations: stations,
+            }
+            return params;
+        } return null;
+    }
+
+    const createCountriesParams = (reportTypes: string[], countries: string[]): CountriesQueryParams | null => {
+        if (countries.length !== 0) {
+            const params: CountriesQueryParams = {
+                id: Date.now().toString(),
+                reportTypes: reportTypes,
+                countries: countries,
+            }
+            return params;
+        } return null;
+    }
+
     const onSubmit = async (data: BriefingFormData) => {
         setIsLoading(true);
 
@@ -87,22 +108,19 @@ function Form() {
             return [];
         }
         const reportTypes = data.reportTypes;
+        const params: (StationsQueryParams | CountriesQueryParams)[] = [];
 
-        const params: QueryParams[] = [
-            {
-                id: Date.now().toString(),
-                reportTypes: reportTypes,
-                ...(stations().length) && { stations: stations() },
-                ...(countries().length) && { countries: countries() },
-            },
-        ]
+        const stationsParams = createStationsParams(reportTypes, stations());
+        if (stationsParams) params.push(stationsParams);
+        const countriesParams = createCountriesParams(reportTypes, countries());
+        if (countriesParams) params.push(countriesParams);
         try {
             const response = await fetchJSONRPC(params);
             updateFormData('response', response);
         } catch (error) {
             console.error(error);
         } finally {
-            methods.reset();
+            methods.reset(); // reset the form after submission
             setIsLoading(false);
         }
     };
