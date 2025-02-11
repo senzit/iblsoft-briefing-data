@@ -7,8 +7,8 @@ export default {
       'xxs': '0px',
       'xs': '480px',
       'sm': '640px',
-      'md': '768px',
-      'lg': '1024px',
+      'md': '860px',
+      'lg': '1100px',
       'xl': '1280px',
       '2xl': '1536px'
     }
